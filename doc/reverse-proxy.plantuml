@@ -1,0 +1,29 @@
+@startuml
+
+agent loopclient as "Loop Client"
+agent browser as "Browser"
+
+node aperture [
+  Authentication Server "Aperture"
+  ....
+  HTTP/2 Reverse Proxy
+]
+
+database etcd [
+  etcd Database Cluster
+  ....
+  Backend Configuration
+]
+
+node loopserver as "Loop Server"
+node bosscores as "BOS Scores"
+
+loopclient -- aperture : gRPC
+browser -- aperture : HTTP
+
+aperture .. etcd
+
+aperture -- loopserver : gRPC
+aperture -- bosscores : HTTP
+
+@enduml
